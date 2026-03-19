@@ -82,17 +82,17 @@ If the user invokes this skill with no additional content (e.g., just "/check-st
    - Include both examples that should trigger the rule (wrong code)
    - Include examples that should NOT trigger (correct code)
 4. **Write the rule file** in `~/.config/ast-grep/rules/[language]/` that matches the test expectations
-5. **Run the test**: `ast-grep test` and verify all assertions pass
-6. **Run the full test suite**: `ast-grep test`
+5. **Run the test**: `ast-grep test --skip-snapshot-tests` and verify all assertions pass
+6. **Run the full test suite**: `ast-grep test --skip-snapshot-tests`
 
 **Note**: Write the test before writing the rule - the test defines the expected behavior. Iteratively refine the rule until all test assertions pass.
 
 ### Running All Tests
 
-Use the ast-grep test command to run all tests:
+Use the ast-grep test command to run all tests (use `--skip-snapshot-tests` since we don't use snapshot tests):
 
 ```bash
-ast-grep test
+ast-grep test --skip-snapshot-tests
 ```
 
 This runs tests for all rule files and produces a summary of pass/fail results.
@@ -165,7 +165,7 @@ ast-grep scan --no-ignore hidden --rule [rule-file] [path]
 6. **Test naming must match**: The test filename (e.g., `my-rule.go`) must match the rule's `id:` field (e.g., `id: my-rule`)
 7. **Don't check installation**: Simply run `ast-grep scan --no-ignore hidden` - if ast-grep is not installed, the command will fail and you'll know
 8. **Use ast-grep command**: Always use `ast-grep` instead of `sg` - the `sg` alias has name collisions with other tools
-9. **Validate after updates**: When modifying existing rules, re-run tests (`ast-grep test`) to ensure they still catch violations
+9. **Validate after updates**: When modifying existing rules, re-run tests (`ast-grep test --skip-snapshot-tests`) to ensure they still catch violations
 
 ## Common Patterns
 
