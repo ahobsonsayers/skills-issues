@@ -45,14 +45,15 @@ The ast-grep configuration follows this structure:
 
 If the user invokes this skill with no additional content (e.g., just "/check-style" or "check style"), **immediately run ast-grep against the current working directory**. Do not wait for code or ask what to check - scan the existing files right away.
 
-1. Run ast-grep to scan the current working directory:
+1. Run ast-grep to scan the current working directory (include hidden files):
    ```bash
-   ast-grep scan
+   ast-grep scan --no-ignore hidden
    ```
 2. Report any violations found to the user
 3. If no global config exists at `~/.config/ast-grep/`, inform the user and offer to set up the standard global structure
 
 **Important**: 
+- The global `sgconfig.yml` is located in your home directory: `~/sgconfig.yml`
 - Only use the global ast-grep configuration. Never create project-specific `sgconfig.yml` files.
 - This skill checks existing code files in the current directory, not code provided by the user.
 
@@ -62,12 +63,12 @@ If the user invokes this skill with no additional content (e.g., just "/check-st
 
 1. Run ast-grep to check the code:
    ```bash
-   ast-grep scan [file-or-directory]
+   ast-grep scan --no-ignore hidden [file-or-directory]
    ```
 2. If violations are found, fix them before presenting the code to the user
 3. If the violations reveal missing rules, consider creating new ones in the global config
 
-**Important**: Only use the global ast-grep configuration at `~/.config/ast-grep/`. Never create project-specific `sgconfig.yml` files.
+**Important**: The global `sgconfig.yml` is located in your home directory: `~/sgconfig.yml`. Only use the global ast-grep configuration at `~/.config/ast-grep/`. Never create project-specific `sgconfig.yml` files.
 
 ### When Creating or Updating Rules
 
@@ -144,12 +145,12 @@ fix: |
 
 ### Basic Scan
 ```bash
-ast-grep scan [path]
+ast-grep scan --no-ignore hidden [path]
 ```
 
 ### Scan with specific rules
 ```bash
-ast-grep scan --rule [rule-file] [path]
+ast-grep scan --no-ignore hidden --rule [rule-file] [path]
 ```
 
 
@@ -157,12 +158,12 @@ ast-grep scan --rule [rule-file] [path]
 ## Best Practices
 
 1. **Always check code**: Run ast-grep on all code you write before presenting it
-2. **Global config only**: Only use the global ast-grep configuration at `~/.config/ast-grep/`. Never create project-specific `sgconfig.yml` files
+2. **Global config only**: The global `sgconfig.yml` is at `~/sgconfig.yml`. Only use the global ast-grep configuration at `~/.config/ast-grep/`. Never create project-specific `sgconfig.yml` files
 3. **Use the /ast-grep skill**: When the user describes a style rule in natural language, invoke the ast-grep skill to convert it to proper YAML
 4. **Organize by language**: Keep rules for different languages in separate directories
 5. **Test all rules**: Every rule must have a test file named after its rule ID in `~/.config/ast-grep/rule-tests/[language]/[rule-id].[ext]`
 6. **Test naming must match**: The test filename (e.g., `my-rule.go`) must match the rule's `id:` field (e.g., `id: my-rule`)
-7. **Don't check installation**: Simply run `ast-grep scan` - if ast-grep is not installed, the command will fail and you'll know
+7. **Don't check installation**: Simply run `ast-grep scan --no-ignore hidden` - if ast-grep is not installed, the command will fail and you'll know
 8. **Use ast-grep command**: Always use `ast-grep` instead of `sg` - the `sg` alias has name collisions with other tools
 9. **Validate after updates**: When modifying existing rules, re-run tests (`ast-grep test`) to ensure they still catch violations
 
@@ -171,7 +172,7 @@ ast-grep scan --rule [rule-file] [path]
 ### Checking a file after writing it
 ```bash
 # After writing code to a file
-ast-grep scan src/myfile.js
+ast-grep scan --no-ignore hidden src/myfile.js
 
 # If violations exist, fix them and re-scan
 ```
@@ -199,6 +200,6 @@ cp ~/.config/ast-grep/sgconfig.yml ~/sgconfig.yml
 sed -i "s|$HOME/.config/ast-grep|~/.config/ast-grep|g" ~/sgconfig.yml
 ```
 
-The `ast-grep new project --yes` command creates the basic directory structure (rules/, rule-tests/, utils/). Then copy the sgconfig.yml to your home directory and update the absolute paths to use `~` instead.
+The `ast-grep new project --yes` command creates the basic directory structure (rules/, rule-tests/, utils/). Copy the generated `sgconfig.yml` to your home directory as `~/sgconfig.yml` and update the absolute paths to use `~` instead.
 
-**Important**: This creates a global configuration only. Never create project-specific `sgconfig.yml` files.
+**Important**: The global `sgconfig.yml` must be located at `~/sgconfig.yml`. This creates a global configuration only. Never create project-specific `sgconfig.yml` files.
