@@ -54,6 +54,6 @@ Update the created symlinks to be relative so they are portable
 - [get-shit-done](https://github.com/obra/superpowers) - the best spec-driven development kit I have found.
 Install by usual means (see link), but if you want the install to be portable, follow up with the following prompt to your agent:
 ```
-Modify all installed gsd g(et-shit-done) agents and skills to replace any references to the absolute home directory with ~ so the agents/skills are portable.
+Modify all installed gsd (get-shit-done) agents and skills to replace any references to the absolute home directory with ~ so the agents/skills are portable.
 ```
 
